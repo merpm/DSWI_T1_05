@@ -1,12 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using DSWI_T1_05.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar los servicios MVC
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ClinicaBDContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ClinicaBDConnection")));
 
 var app = builder.Build();
 
-// Configurar el manejo de errores
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
