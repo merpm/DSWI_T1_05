@@ -42,6 +42,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Configurar solicitudes HTTP
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -49,7 +50,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-// Configuración de rutas MVC
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
