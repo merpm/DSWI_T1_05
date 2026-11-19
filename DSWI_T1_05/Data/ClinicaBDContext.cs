@@ -23,12 +23,7 @@ public partial class ClinicaBDContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ClinicaBD;User Id=sa;Password=Admin123*;Encrypt=False;TrustServerCertificate=True;");
-        }
     }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
