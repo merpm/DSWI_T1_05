@@ -5,9 +5,87 @@
 <div class="container mt-5">
 
     <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold">Sistema de Gestión de Clínica</h1>
+        <h1 class="display-5 fw-bold">Sistema de Gestión</h1>
         <p class="lead text-muted">
-            Bienvenido al sistema de administración de pacientes y citas médicas.
+            Plataforma de administración y gestión de operaciones.
+        </p>
+    </div>
+
+    <!-- PREGUNTA 1 -->
+    <div class="mb-4">
+        <h2 class="h4 fw-bold border-bottom pb-2">
+            <span class="badge bg-primary me-2">Pregunta 1</span>
+            Gestión de Operaciones
+        </h2>
+        <p class="text-muted">
+            Administración de préstamos y envíos.
+        </p>
+    </div>
+
+    <div class="row justify-content-center g-4 mb-5">
+
+        <!-- Módulo Préstamos -->
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-3">
+                        <i class="bi bi-journal-check display-1 text-success"></i>
+                    </div>
+
+                    <h3 class="card-title">Préstamos</h3>
+
+                    <p class="card-text text-muted">
+                        Gestiona y consulta los préstamos registrados
+                        en el sistema.
+                    </p>
+
+                    <a asp-controller="Prestamo"
+                       asp-action="Index"
+                       class="btn btn-success btn-lg mt-3">
+                        Gestionar Préstamos
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo Envíos -->
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-3">
+                        <i class="bi bi-truck display-1 text-primary"></i>
+                    </div>
+
+                    <h3 class="card-title">Envíos</h3>
+
+                    <p class="card-text text-muted">
+                        Administra y consulta la información de los envíos
+                        registrados en el sistema.
+                    </p>
+
+                    <a asp-controller="Envio"
+                       asp-action="Index"
+                       class="btn btn-primary btn-lg mt-3">
+                        Gestionar Envíos
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PREGUNTA 2 -->
+    <div class="mb-4">
+        <h2 class="h4 fw-bold border-bottom pb-2">
+            <span class="badge bg-dark me-2">Pregunta 2</span>
+            Gestión de Clínica
+        </h2>
+        <p class="text-muted">
+            Administración de pacientes y citas médicas.
         </p>
     </div>
 
@@ -25,8 +103,8 @@
                     <h3 class="card-title">Pacientes</h3>
 
                     <p class="card-text text-muted">
-                        Administra la información de los pacientes registrados
-                        en la clínica.
+                        Administra la información de los pacientes
+                        registrados en la clínica.
                     </p>
 
                     <a asp-controller="Pacientes"
