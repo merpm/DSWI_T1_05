@@ -1,1 +1,140 @@
 ﻿@* Vista inicial. Implementacion pendiente. *@
+
+@model DSWI_T1_05.ViewModels.Prestamo.CalcularPrestamoViewModel
+
+@{
+    ViewData["Title"] = "Calculo de Prestamos";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Calculadora de Prestamos</h3>
+                    <p class="mb-0">Sistema de calculo de cuotas e intereses</p>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-controller="Prestamo"
+                          asp-action="Index"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="MontoPrestamo"
+                                   class="form-label">
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+
+                                <input asp-for="MontoPrestamo"
+                                       type="number"
+                                       step="0.01"
+                                       min="0.01"
+                                       class="form-control"
+                                       placeholder="Ingrese el monto del prestamo" />
+                            </div>
+
+                            <span asp-validation-for="MontoPrestamo"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Calcular Prestamo
+                        </button>
+
+                    </form>
+
+                    @if (Model.Resultado != null)
+                    {
+                        <hr class="my-4" />
+
+                        <h4 class="text-center mb-3">
+                            Resultado del Prestamo
+                        </h4>
+
+                        <div class="alert alert-success">
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Monto solicitado:</span>
+                                <strong>
+                                    $@Model.Resultado.MontoPrestamo.ToString("N2")
+                                </strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Interes aplicado:</span>
+                                <strong>
+                                    @Model.Resultado.PorcentajeInteres.ToString("P0")
+                                </strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Importe del interes:</span>
+                                <strong>
+                                    $@Model.Resultado.MontoInteres.ToString("N2")
+                                </strong>
+                            </div>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Deuda total:</span>
+                                <strong>
+                                    $@Model.Resultado.DeudaTotal.ToString("N2")
+                                </strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Cantidad de cuotas:</span>
+                                <strong>
+                                    @Model.Resultado.CantidadCuotas
+                                </strong>
+                            </div>
+
+                            <hr />
+
+                            <div class="text-center">
+
+                                <p class="mb-1">
+                                    Valor de cada cuota
+                                </p>
+
+                                <h2 class="text-success">
+                                    $@Model.Resultado.ValorCuota.ToString("N2")
+                                </h2>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
