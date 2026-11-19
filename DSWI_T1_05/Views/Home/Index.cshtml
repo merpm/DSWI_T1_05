@@ -1,8 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Sistema de Gestión de Clínica</h1>
+        <p class="lead text-muted">
+            Bienvenido al sistema de administración de pacientes y citas médicas.
+        </p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+
+        <!-- Módulo Pacientes -->
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-3">
+                        <i class="bi bi-people-fill display-1 text-primary"></i>
+                    </div>
+
+                    <h3 class="card-title">Pacientes</h3>
+
+                    <p class="card-text text-muted">
+                        Administra la información de los pacientes registrados
+                        en la clínica.
+                    </p>
+
+                    <a asp-controller="Pacientes"
+                       asp-action="Index"
+                       class="btn btn-primary btn-lg mt-3">
+                        Gestionar Pacientes
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo Citas -->
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-check-fill display-1 text-success"></i>
+                    </div>
+
+                    <h3 class="card-title">Citas Médicas</h3>
+
+                    <p class="card-text text-muted">
+                        Registra, consulta y actualiza las citas médicas
+                        de los pacientes.
+                    </p>
+
+                    <a asp-controller="Citas"
+                       asp-action="Index"
+                       class="btn btn-success btn-lg mt-3">
+                        Gestionar Citas
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>

@@ -1,0 +1,219 @@
+﻿
+/* ============================================================
+   PROYECTO: DSWI_T1_05
+   BASE DE DATOS: ClinicaBD
+   DESCRIPCION: Creacion de tablas, datos iniciales y SP
+   ============================================================ */
+
+-- ============================================================
+-- 1. CREAR BASE DE DATOS
+-- ============================================================
+
+IF DB_ID('ClinicaBD') IS NULL
+BEGIN
+    CREATE DATABASE ClinicaBD;
+END
+GO
+
+USE ClinicaBD;
+GO
+
+-- ============================================================
+-- 2. CREAR TABLA PACIENTES
+-- ============================================================
+
+IF OBJECT_ID('dbo.Pacientes', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Pacientes (
+        PacienteID INT PRIMARY KEY IDENTITY(1,1),
+        Nombre NVARCHAR(100),
+        DNI NVARCHAR(20)
+    );
+END
+GO
+
+-- ============================================================
+-- 3. CREAR TABLA CITAS
+-- ============================================================
+
+IF OBJECT_ID('dbo.Citas', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Citas (
+        CitaID INT PRIMARY KEY IDENTITY(1,1),
+        Fecha DATE,
+        Hora TIME,
+        Especialidad NVARCHAR(50),
+        Estado NVARCHAR(20),
+        PacienteID INT,
+        CONSTRAINT FK_Citas_Pacientes FOREIGN KEY (PacienteID)
+            REFERENCES dbo.Pacientes(PacienteID)
+    );
+END
+GO
+
+-- ============================================================
+-- 4. INSERTAR DATOS INICIALES
+-- ============================================================
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Pacientes)
+BEGIN
+    INSERT INTO dbo.Pacientes (Nombre, DNI)
+    VALUES
+        ('Luis Herrera', '47891234'),
+        ('Marina Ruiz', '50912345'),
+        ('Diego Bravo', '43098765');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Citas)
+BEGIN
+    INSERT INTO dbo.Citas (Fecha, Hora, Especialidad, Estado, PacienteID)
+    VALUES
+        ('2025-04-10', '09:30', 'Cardiología', 'Pendiente', 1),
+        ('2025-04-11', '10:00', 'Dermatología', 'Confirmada', 2),
+        ('2025-04-12', '08:45', 'Pediatría', 'Cancelada', 3);
+END
+GO
+
+-- ============================================================
+-- 5. PROCEDIMIENTOS ALMACENADOS: PACIENTES
+-- ============================================================
+
+-- Listar pacientes
+CREATE OR ALTER PROCEDURE dbo.usp_Pacientes_Listar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT PacienteID, Nombre, DNI
+    FROM dbo.Pacientes
+    ORDER BY PacienteID;
+END
+GO
+
+-- Obtener paciente por ID
+CREATE OR ALTER PROCEDURE dbo.usp_Pacientes_ObtenerPorId
+    @PacienteID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT PacienteID, Nombre, DNI
+    FROM dbo.Pacientes
+    WHERE PacienteID = @PacienteID;
+END
+GO
+
+-- Crear paciente
+CREATE OR ALTER PROCEDURE dbo.usp_Pacientes_Crear
+    @Nombre NVARCHAR(100),
+    @DNI NVARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.Pacientes (Nombre, DNI)
+    VALUES (@Nombre, @DNI);
+END
+GO
+
+-- Editar paciente
+CREATE OR ALTER PROCEDURE dbo.usp_Pacientes_Editar
+    @PacienteID INT,
+    @Nombre NVARCHAR(100),
+    @DNI NVARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE dbo.Pacientes
+    SET Nombre = @Nombre,
+        DNI = @DNI
+    WHERE PacienteID = @PacienteID;
+END
+GO
+
+-- ============================================================
+-- 6. PROCEDIMIENTOS ALMACENADOS: CITAS
+-- ============================================================
+
+-- Listar citas
+CREATE OR ALTER PROCEDURE dbo.usp_Citas_Listar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT C.CitaID, C.Fecha, C.Hora, C.Especialidad,
+           C.Estado, C.PacienteID, P.Nombre AS NombrePaciente
+    FROM dbo.Citas C
+    INNER JOIN dbo.Pacientes P ON C.PacienteID = P.PacienteID
+    ORDER BY C.CitaID;
+END
+GO
+
+-- Obtener cita por ID
+CREATE OR ALTER PROCEDURE dbo.usp_Citas_ObtenerPorId
+    @CitaID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT C.CitaID, C.Fecha, C.Hora, C.Especialidad,
+           C.Estado, C.PacienteID, P.Nombre AS NombrePaciente
+    FROM dbo.Citas C
+    INNER JOIN dbo.Pacientes P ON C.PacienteID = P.PacienteID
+    WHERE C.CitaID = @CitaID;
+END
+GO
+
+-- Crear cita
+CREATE OR ALTER PROCEDURE dbo.usp_Citas_Crear
+    @Fecha DATE,
+    @Hora TIME,
+    @Especialidad NVARCHAR(50),
+    @Estado NVARCHAR(20),
+    @PacienteID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.Citas (Fecha, Hora, Especialidad, Estado, PacienteID)
+    VALUES (@Fecha, @Hora, @Especialidad, @Estado, @PacienteID);
+END
+GO
+
+-- Editar cita
+CREATE OR ALTER PROCEDURE dbo.usp_Citas_Editar
+    @CitaID INT,
+    @Fecha DATE,
+    @Hora TIME,
+    @Especialidad NVARCHAR(50),
+    @Estado NVARCHAR(20),
+    @PacienteID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE dbo.Citas
+    SET Fecha = @Fecha,
+        Hora = @Hora,
+        Especialidad = @Especialidad,
+        Estado = @Estado,
+        PacienteID = @PacienteID
+    WHERE CitaID = @CitaID;
+END
+GO
+
+-- ============================================================
+-- 7. VERIFICAR RESULTADOS
+-- ============================================================
+
+SELECT * FROM dbo.Pacientes;
+SELECT * FROM dbo.Citas;
+
+EXEC dbo.usp_Pacientes_Listar;
+EXEC dbo.usp_Citas_Listar;
+GO
+
+PRINT 'Base de datos ClinicaBD creada y procedimientos almacenados configurados correctamente.';
+GO

@@ -1,1 +1,77 @@
-﻿@* Vista inicial. Implementacion pendiente. *@
+﻿@model DSWI_T1_05.DTOs.CitaDto
+@using DSWI_T1_05.DTOs
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Editar Cita";
+
+    var pacientes = ViewBag.Pacientes as IEnumerable<PacienteDto>
+        ?? Enumerable.Empty<PacienteDto>();
+}
+
+<h2>Editar Cita</h2>
+
+<form asp-action="Edit"
+      asp-route-id="@Model.CitaId"
+      method="post">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <input type="hidden" asp-for="CitaId" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Fecha" class="form-label">Fecha</label>
+        <input asp-for="Fecha" type="date" class="form-control" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Hora" class="form-label">Hora</label>
+        <input asp-for="Hora" type="time" class="form-control" />
+        <span asp-validation-for="Hora" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Especialidad" class="form-label">
+            Especialidad
+        </label>
+        <input asp-for="Especialidad" class="form-control" />
+        <span asp-validation-for="Especialidad"
+              class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Estado" class="form-label">Estado</label>
+        <input asp-for="Estado" class="form-control" />
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="PacienteId" class="form-label">Paciente</label>
+
+        <select asp-for="PacienteId"
+                class="form-select"
+                asp-items="@(new SelectList(pacientes, "PacienteId", "Nombre"))">
+            <option value="">Seleccione un paciente</option>
+        </select>
+
+        <span asp-validation-for="PacienteId"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Actualizar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
